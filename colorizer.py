@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageOps
 from torchvision import transforms
 import numpy as np
 from skimage.color import rgb2lab, lab2rgb
@@ -6,6 +6,7 @@ import torch
 import fastai
 import io
 import base64
+
 
 model = torch.load('./generator.pt')
 model.eval()
@@ -25,9 +26,9 @@ def lab_to_rgb(L, ab):
     return np.stack(rgb_imgs, axis=0)
     
 
-def Colorizer(image):
+def Colorizer(image,base64_res):
     img = Image.open(image).convert("RGB")
-
+    img = ImageOps.contain(img,(400,400),Image.LANCZOS)
     # Convert to np array
     img = np.array(img)
 
@@ -47,14 +48,15 @@ def Colorizer(image):
     # converting back to actual values and rgb
     fake_img = lab_to_rgb(L.unsqueeze(0), predicted_ab.detach())[0]
 
-    bytes_img = io.BytesIO()
+    file_object = io.BytesIO()
 
     im = Image.fromarray((fake_img*255).astype('uint8'))
 
-    im.save(bytes_img, "PNG")
+    im.save(file_object, "PNG")
 
-    bytes_img.seek(0)
+    file_object.seek(0)
 
-    base64_img = base64.b64encode(bytes_img.read())
-
-    return base64_img
+    if base64_res==True:
+        base64_img = base64.b64encode(file_object.read())
+        return base64_img
+    return file_object

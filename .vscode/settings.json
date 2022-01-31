@@ -30,6 +30,6 @@
         "venv.bak{,/**}",
         ".vscode{,/**}"
     ],
-    "appService.defaultWebAppToDeploy": "/subscriptions/ceeae34e-12cf-4c24-b04b-b1f894d36cdc/resourceGroups/DefaultResourceGroup-WUS2/providers/Microsoft.Web/sites/color-api",
-    "appService.deploySubpath": "."
+    "appService.deploySubpath": ".",
+    "appService.defaultWebAppToDeploy": "/subscriptions/ceeae34e-12cf-4c24-b04b-b1f894d36cdc/resourceGroups/DefaultResourceGroup-WUS2/providers/Microsoft.Web/sites/color-api"
 }
